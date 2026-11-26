@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>INK &amp; AURA — Precision Wheels &amp; Auto Care</title>
+<meta name="description" content="INK & AURA — premium forged wheels, alloys, tyres and expert vehicle maintenance. Radleigh House, 1 Golf Road, United Kingdom." />
+
+<!-- FAVICON (inline SVG wheel) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%230b0b0e'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23f0a500' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23f0a500'/%3E%3Cg stroke='%23f0a500' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M32 9v16M32 39v16M9 32h16M39 32h16M15.7 15.7l11.3 11.3M37 37l11.3 11.3M48.3 15.7L37 27M27 37L15.7 48.3'/%3E%3C/g%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --ink:#08080a;
+  --ink-2:#0d0d11;
+  --ink-3:#131319;
+  --line:rgba(255,255,255,.09);
+  --gold:#f0a500;
+  --gold-2:#ffcb5c;
+  --text:#e9e9ef;
+  --muted:#9a9aa8;
+  --radius:18px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:var(--ink);
+  color:var(--text);
+  line-height:1.68;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* carbon-fibre + aura background */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(1100px 650px at 82% -12%, rgba(240,165,0,.13), transparent 62%),
+    radial-gradient(900px 560px at -5% 105%, rgba(70,110,255,.09), transparent 62%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.014) 0 2px, transparent 2px 5px);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(0,0,0,.55) 100%);
+}
+
+h1,h2,h3,h4,.brand-text{font-family:'Space Grotesk','Inter',sans-serif;line-height:1.15;letter-spacing:-.02em}
+img,svg{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button,input,textarea,select{font:inherit;color:inherit}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.grad{background:linear-gradient(120deg,var(--gold-2),var(--gold) 55%,#b97700);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ============ SCROLL PROGRESS ============ */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2));
+  box-shadow:0 0 14px rgba(240,165,0,.8);transition:width .1s linear}
+
+/* ============ NAVBAR ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:150;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(8,8,10,.82);backdrop-filter:blur(20px) saturate(150%);border-bottom-color:var(--line)}
+
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
+
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:42px;height:42px;flex:none;animation:spin 22s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.brand-text{font-size:1.06rem;font-weight:700;letter-spacing:.14em}
+.brand-text small{display:block;font-family:'Inter',sans-serif;font-size:.62rem;letter-spacing:.32em;color:var(--muted);font-weight:500;margin-top:1px}
+
+.nav-menu{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-menu a{
+  position:relative;padding:9px 15px;border-radius:999px;font-size:.9rem;font-weight:500;
+  color:var(--muted);transition:color .3s,background .3s;
+}
+.nav-menu a::after{
+  content:'';position:absolute;left:50%;bottom:3px;height:2px;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-2));transform:translateX(-50%);transition:width .3s var(--ease);
+}
+.nav-menu a:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-menu a:hover::after,.nav-menu a.active::after{width:20px}
+.nav-menu a.active{color:var(--gold-2)}
+
+.nav-cta{display:flex;align-items:center;gap:10px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);cursor:pointer;place-items:center}
+.burger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s;position:relative}
+.burger span::before,.burger span::after{content:'';position:absolute;left:0;width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger.open span{background:transparent}
+.burger.open span::before{top:0;transform:rotate(45deg)}
+.burger.open span::after{top:0;transform:rotate(-45deg)}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 28px;border-radius:999px;font-weight:600;font-size:.94rem;
+  border:1px solid transparent;cursor:pointer;transition:.35s var(--ease);white-space:nowrap;
+}
+.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#170f00;
+  box-shadow:0 12px 34px rgba(240,165,0,.3)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(240,165,0,.46)}
+.btn-ghost{border-color:var(--line);background:rgba(255,255,255,.035);color:var(--text)}
+.btn-ghost:hover{border-color:rgba(240,165,0,.6);color:var(--gold-2);transform:translateY(-3px)}
+.btn-sm{padding:11px 20px;font-size:.86rem}
+
+/* ============ SECTION SHELL ============ */
+section{padding:110px 0;position:relative}
+.sec-head{max-width:660px;margin-bottom:56px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;font-size:.74rem;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2);margin-bottom:16px;
+}
+.eyebrow::before{content:'';width:26px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+.sec-head h2{font-size:clamp(1.9rem,4.2vw,2.9rem);margin-bottom:16px}
+.sec-head p{color:var(--muted);font-size:1.03rem}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:flex;align-items:center;padding:130px 0 80px}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:center}
+
+.pill{
+  display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;
+  font-size:.78rem;font-weight:600;letter-spacing:.06em;color:var(--gold-2);
+  background:rgba(240,165,0,.09);border:1px solid rgba(240,165,0,.28);margin-bottom:26px;
+}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+
+.hero h1{font-size:clamp(2.3rem,5.6vw,4.15rem);margin-bottom:22px;letter-spacing:-.035em}
+.hero p.lead{color:var(--muted);font-size:1.08rem;max-width:520px;margin-bottom:34px}
+
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:52px}
+
+.hero-stats{display:flex;flex-wrap:wrap;gap:14px}
+.hstat{padding:16px 22px;border-radius:14px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));min-width:126px}
+.hstat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.5rem;color:var(--gold-2)}
+.hstat span{font-size:.76rem;color:var(--muted);letter-spacing:.05em}
+
+/* ---- Hero wheel ---- */
+.hero-visual{position:relative;display:grid;place-items:center;min-height:440px}
+.hero-visual::before{
+  content:'';position:absolute;width:78%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,165,0,.22),transparent 68%);filter:blur(46px);
+}
+.wheel{
+  --size:380px;width:var(--size);height:var(--size);border-radius:50%;position:relative;
+  background:
+    radial-gradient(circle at 50% 50%, #f4f4f9 0 8%, #9aa0ad 8% 11%, #1b1b22 11% 19%, transparent 19%),
+    repeating-conic-gradient(from 0deg, #c2c7d2 0deg 5deg, #1c1c23 5deg 30deg);
+  border:calc(var(--size)*.055) solid #24252e;
+  box-shadow:
+    inset 0 0 0 calc(var(--size)*.014) #0b0b0f,
+    inset 0 0 60px rgba(0,0,0,.85),
+    0 30px 80px rgba(0,0,0,.7),
+    0 0 90px rgba(240,165,0,.16);
+  animation:spin 26s linear infinite;
+}
+.wheel::after{
+  content:'';position:absolute;inset:calc(var(--size)*.058);border-radius:50%;
+  box-shadow:inset 0 0 0 calc(var(--size)*.022) #33343e, inset 0 0 40px rgba(0,0,0,.9);
+}
+.hero-visual .wheel{--size:min(380px,78vw)}
+
+.chip{
+  position:absolute;padding:11px 18px;border-radius:14px;font-size:.8rem;font-weight:600;
+  background:rgba(13,13,17,.82);border:1px solid var(--line);backdrop-filter:blur(14px);
+  box-shadow:0 14px 40px rgba(0,0,0,.55);display:flex;align-items:center;gap:9px;
+  animation:float 5s ease-in-out infinite;
+}
+.chip b{color:var(--gold-2)}
+.chip.c1{top:6%;right:-4%;animation-delay:0s}
+.chip.c2{bottom:14%;left:-6%;animation-delay:1.4s}
+.chip.c3{bottom:-2%;right:8%;animation-delay:2.6s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* ============ CARD GRID ============ */
+.grid{display:grid;gap:22px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+
+.card{
+  position:relative;padding:32px;border-radius:var(--radius);overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));
+  border:1px solid var(--line);transition:.45s var(--ease);
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0;transition:opacity .45s;
+}
+.card:hover{transform:translateY(-9px);border-color:rgba(240,165,0,.42);
+  box-shadow:0 26px 60px rgba(0,0,0,.55),0 0 46px rgba(240,165,0,.07)}
+.card:hover::before{opacity:1}
+
+.icon-box{
+  width:54px;height:54px;border-radius:15px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(145deg,rgba(240,165,0,.18),rgba(240,165,0,.04));
+  border:1px solid rgba(240,165,0,.3);color:var(--gold-2);transition:.45s var(--ease);
+}
+.card:hover .icon-box{transform:rotate(-8deg) scale(1.06);box-shadow:0 0 26px rgba(240,165,0,.25)}
+.card h3{font-size:1.18rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.94rem}
+
+/* ============ WHEELS / PRODUCTS ============ */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:38px}
+.filter{
+  padding:10px 22px;border-radius:999px;font-size:.85rem;font-weight:600;cursor:pointer;
+  background:rgba(255,255,255,.035);border:1px solid var(--line);color:var(--muted);transition:.3s;
+}
+.filter:hover{color:var(--text);border-color:rgba(240,165,0,.4)}
+.filter.active{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#170f00;border-color:transparent;
+  box-shadow:0 10px 28px rgba(240,165,0,.3)}
+
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.product{
+  border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.01));
+  transition:.45s var(--ease);animation:fadeUp .5s var(--ease) both;
+}
+.product:hover{transform:translateY(-9px);border-color:rgba(240,165,0,.45);
+  box-shadow:0 26px 60px rgba(0,0,0,.6)}
+.product.hide{display:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.p-media{
+  height:210px;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 50% 55%,rgba(240,165,0,.15),transparent 62%),
+             repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0 2px,transparent 2px 5px);
+  border-bottom:1px solid var(--line);
+}
+.p-media .wheel{--size:132px;animation-duration:14s;animation-play-state:paused;transition:animation-play-state .2s}
+.product:hover .p-media .wheel{animation-play-state:running}
+
+.p-tag{position:absolute;top:14px;left:14px;padding:5px 13px;border-radius:999px;font-size:.68rem;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2);
+  background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.35)}
+
+.p-body{padding:22px 24px 26px}
+.p-body h4{font-size:1.06rem;margin-bottom:6px}
+.p-body .spec{color:var(--muted);font-size:.83rem;margin-bottom:18px}
+.p-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-family:'Space Grotesk',sans-serif;font-size:1.16rem;color:var(--gold-2)}
+.price small{font-size:.72rem;color:var(--muted);font-weight:400}
+
+/* ============ MAINTENANCE ============ */
+.packages{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:56px}
+.pkg{position:relative;padding:36px 30px;border-radius:var(--radius);border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.01));transition:.45s var(--ease)}
+.pkg:hover{transform:translateY(-9px);border-color:rgba(240,165,0,.42);box-shadow:0 26px 60px rgba(0,0,0,.55)}
+.pkg.featured{border-color:rgba(240,165,0,.55);
+  background:linear-gradient(180deg,rgba(240,165,0,.1),rgba(255,255,255,.012));
+  box-shadow:0 0 60px rgba(240,165,0,.12)}
+.pkg .badge{position:absolute;top:-13px;left:30px;padding:5px 16px;border-radius:999px;font-size:.68rem;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#170f00}
+.pkg h3{font-size:1.2rem;margin-bottom:8px}
+.pkg .price{font-size:2rem;margin:14px 0 22px}
+.pkg ul{list-style:none;display:grid;gap:11px;margin-bottom:28px}
+.pkg li{display:flex;gap:11px;font-size:.9rem;color:var(--muted)}
+.pkg li::before{content:'✓';color:var(--gold);font-weight:800;flex:none}
+.pkg .btn{width:100%}
+
+.tips{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.tip{padding:24px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.028);transition:.4s}
+.tip:hover{border-color:rgba(240,165,0,.4);transform:translateY(-6px);background:rgba(240,165,0,.05)}
+.tip b{display:block;font-family:'Space Grotesk',sans-serif;font-size:.95rem;margin-bottom:6px;color:var(--gold-2)}
+.tip span{font-size:.85rem;color:var(--muted)}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:64px;align-items:center}
+.about-visual{position:relative;display:grid;place-items:center;min-height:400px}
+.about-visual .wheel{--size:min(330px,72vw);animation-duration:34s;animation-direction:reverse}
+.about-visual::before{content:'';position:absolute;width:74%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,165,0,.2),transparent 68%);filter:blur(50px)}
+.about-visual .ring{position:absolute;border-radius:50%;border:1px dashed rgba(240,165,0,.25);
+  width:min(430px,92vw);aspect-ratio:1;animation:spin 44s linear infinite}
+.about-visual .ring.two{width:min(500px,104vw);border-style:dotted;border-color:rgba(255,255,255,.1);animation-direction:reverse;animation-duration:60s}
+
+.about-copy h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:20px}
+.about-copy p{color:var(--muted);margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
+.stat{padding:22px;border-radius:14px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:2rem;color:var(--gold-2);line-height:1.1}
+.stat span{font-size:.8rem;color:var(--muted);letter-spacing:.06em}
+
+/* ============ CONTACT ============ */
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
+.info-card{display:flex;gap:16px;padding:22px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);margin-bottom:14px;transition:.4s var(--ease)}
+.info-card:hover{border-color:rgba(240,165,0,.45);transform:translateX(6px);background:rgba(240,165,0,.05)}
+.info-card .icon-box{margin:0;width:46px;height:46px;border-radius:12px;flex:none}
+.info-card h4{font-size:.94rem;margin-bottom:3px}
+.info-card a,.info-card p{color:var(--muted);font-size:.9rem;transition:color .3s}
+.info-card a:hover{color:var(--gold-2)}
+
+.form-card{padding:36px;border-radius:var(--radius);border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.8rem;font-weight:600;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+.field input,.field select,.field textarea{
+  width:100%;padding:14px 17px;border-radius:12px;background:rgba(0,0,0,.35);
+  border:1px solid var(--line);font-size:.93rem;transition:.3s;outline:none;
+}
+.field textarea{resize:vertical;min-height:118px}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:rgba(240,165,0,.65);box-shadow:0 0 0 4px rgba(240,165,0,.1);background:rgba(0,0,0,.5)}
+.field select option{background:#14141a}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translate(-50%,140%);z-index:300;
+  padding:15px 28px;border-radius:999px;font-weight:600;font-size:.9rem;
+  background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#170f00;
+  box-shadow:0 18px 46px rgba(240,165,0,.4);transition:transform .5s var(--ease);
+}
+.toast.show{transform:translate(-50%,0)}
+
+/* ============ FOOTER ============ */
+footer{padding:64px 0 34px;border-top:1px solid var(--line);margin-top:40px;position:relative}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.foot-grid h4{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2);margin-bottom:18px}
+.foot-grid ul{list-style:none;display:grid;gap:11px}
+.foot-grid a,.foot-grid li{color:var(--muted);font-size:.9rem;transition:color .3s}
+.foot-grid a:hover{color:var(--gold-2)}
+.foot-about p{color:var(--muted);font-size:.9rem;margin-top:16px;max-width:320px}
+.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  padding-top:26px;border-top:1px solid var(--line);color:var(--muted);font-size:.83rem}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(36px);
+  transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1024px){
+  .hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr;gap:56px}
+  .hero-visual{order:-1;min-height:340px}
+  .g3,.products,.packages{grid-template-columns:repeat(2,1fr)}
+  .tips{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  section{padding:80px 0}
+  .nav-menu{
+    position:fixed;top:78px;left:16px;right:16px;flex-direction:column;align-items:stretch;
+    gap:6px;padding:16px;border-radius:20px;background:rgba(10,10,14,.96);
+    backdrop-filter:blur(22px);border:1px solid var(--line);
+    box-shadow:0 30px 70px rgba(0,0,0,.7);
+    opacity:0;visibility:hidden;transform:translateY(-14px);transition:.35s var(--ease);
+  }
+  .nav-menu.open{opacity:1;visibility:visible;transform:none}
+  .nav-menu a{padding:13px 16px;font-size:.95rem}
+  .nav-menu a::after{display:none}
+  .burger{display:grid}
+  .nav-cta .btn{display:none}
+  .g3,.g2,.products,.packages,.tips,.stats,.two-col{grid-template-columns:1fr}
+  .chip.c1{right:0;top:0}.chip.c2{left:0}.chip.c3{right:0;bottom:0}
+  .hero{padding-top:112px}
+  .foot-grid{grid-template-columns:1fr}
+  .form-card{padding:26px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+
+<body>
+
+<div id="progress"></div>
+
+<!-- ================= NAVBAR ================= -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#home" class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="#0b0b0e" stroke="#2a2b34" stroke-width="2"/>
+        <circle cx="32" cy="32" r="22" fill="none" stroke="#f0a500" stroke-width="4"/>
+        <circle cx="32" cy="32" r="6.5" fill="#f0a500"/>
+        <g stroke="#f0a500" stroke-width="3" stroke-linecap="round">
+          <path d="M32 10v14M32 40v14M10 32h14M40 32h14M16.5 16.5l10 10M37.5 37.5l10 10M47.5 16.5l-10 10M26.5 37.5l-10 10"/>
+        </g>
+      </svg>
+      <span class="brand-text">INK &amp; AURA<small>WHEELS · AUTOCARE</small></span>
+    </a>
+
+    <nav>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#wheels">Wheels</a></li>
+        <li><a href="#maintenance">Maintenance</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-gold btn-sm">Book Now</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="pill"><i></i> Premium Wheels &amp; Auto Care — United Kingdom</span>
+      <h1>Where <span class="grad">Ink</span> Meets <span class="grad">Aura</span> on Every Wheel</h1>
+      <p class="lead">
+        Forged wheels, precision alloys and expert vehicle maintenance — engineered in
+        Radleigh House for drivers who notice every detail. Fitment, balance, finish: flawless.
+      </p>
+      <div class="hero-cta">
+        <a href="#wheels" class="btn btn-gold">Explore Wheels →</a>
+        <a href="#maintenance" class="btn btn-ghost">Book Maintenance</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><b data-count="12">0</b><span>Years Experience</span></div>
+        <div class="hstat"><b data-count="4800">0</b><span>Wheels Fitted</span></div>
+        <div class="hstat"><b data-count="98">0</b><span>% Satisfaction</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="wheel"></div>
+      <div class="chip c1">⚙️ <b>Forged</b> Series</div>
+      <div class="chip c2">🛞 <b>Free</b> Fitment</div>
+      <div class="chip c3">⭐ <b>4.9</b> Rated</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">What We Do</span>
+      <h2>Services Built Around <span class="grad">Precision</span></h2>
+      <p>From a single alloy replacement to a full performance setup — every job handled with workshop-grade care.</p>
+    </div>
+
+    <div class="grid g3">
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/><path d="M12 3v5.8M12 15.2V21M3 12h5.8M15.2 12H21"/></svg>
+        </div>
+        <h3>Wheel Supply &amp; Fitment</h3>
+        <p>Forged, alloy and custom wheels sourced, balanced and torqued to manufacturer spec with laser alignment.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 17V9l3-4h12l3 4v8"/><circle cx="7.5" cy="17" r="2.2"/><circle cx="16.5" cy="17" r="2.2"/><path d="M3 13h18"/></svg>
+        </div>
+        <h3>Tyre Replacement</h3>
+        <p>Premium tyre brands, puncture repair, pressure calibration and seasonal swap-overs while you wait.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9.4 9.4a2.8 2.8 0 0 1-4-4z"/><path d="M17.5 3.5l3 3"/></svg>
+        </div>
+        <h3>Full Vehicle Servicing</h3>
+        <p>Interim and full services, brake inspection, fluid top-ups and digital health reports for every vehicle.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        </div>
+        <h3>Performance Upgrades</h3>
+        <p>Suspension tuning, brake kits and lightweight wheel packages engineered for sharper handling.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg>
+        </div>
+        <h3>Refurbishment &amp; Coating</h3>
+        <p>Diamond cutting, powder coating and kerb-damage repair that restores that showroom finish.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-4.4-7-9.6A4.4 4.4 0 0 1 12 8a4.4 4.4 0 0 1 7 3.4C19 16.6 12 21 12 21z"/></svg>
+        </div>
+        <h3>Mobile Assistance</h3>
+        <p>Emergency tyre and wheel support across the region — fast response, fully equipped van.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHEELS ================= -->
+<section id="wheels">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Collection</span>
+      <h2>Wheels With an <span class="grad">Aura</span></h2>
+      <p>Hand-selected sets, each one balanced, tested and finished to our standard. Filter by category.</p>
+    </div>
+
+    <div class="filters reveal">
+      <button class="filter active" data-filter="all">All Wheels</button>
+      <button class="filter" data-filter="forged">Forged</button>
+      <button class="filter" data-filter="alloy">Alloy</button>
+      <button class="filter" data-filter="sport">Sport</button>
+      <button class="filter" data-filter="offroad">Off-Road</button>
+    </div>
+
+    <div class="products" id="productGrid">
+      <article class="product" data-cat="forged">
+        <div class="p-media"><span class="p-tag">Forged</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Aura Forged S1</h4>
+          <p class="spec">19" · Matte Black · 5-Spoke</p>
+          <div class="p-foot"><span class="price">£1,240 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+
+      <article class="product" data-cat="alloy">
+        <div class="p-media"><span class="p-tag">Alloy</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Ink Matte M2</h4>
+          <p class="spec">18" · Satin Gunmetal · Multi-Spoke</p>
+          <div class="p-foot"><span class="price">£860 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+
+      <article class="product" data-cat="offroad">
+        <div class="p-media"><span class="p-tag">Off-Road</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Titan Off-Road X</h4>
+          <p class="spec">20" · Bronze · Beadlock Style</p>
+          <div class="p-foot"><span class="price">£1,480 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+
+      <article class="product" data-cat="sport">
+        <div class="p-media"><span class="p-tag">Sport</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Vortex Sport RS</h4>
+          <p class="spec">19" · Gloss Black · Split-Spoke</p>
+          <div class="p-foot"><span class="price">£1,150 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+
+      <article class="product" data-cat="alloy">
+        <div class="p-media"><span class="p-tag">Alloy</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Nebula Chrome C3</h4>
+          <p class="spec">17" · Polished Chrome · Concave</p>
+          <div class="p-foot"><span class="price">£740 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+
+      <article class="product" data-cat="forged">
+        <div class="p-media"><span class="p-tag">Forged</span><div class="wheel"></div></div>
+        <div class="p-body">
+          <h4>Phantom Forged F9</h4>
+          <p class="spec">20" · Satin Titanium · Monoblock</p>
+          <div class="p-foot"><span class="price">£1,690 <small>/ set</small></span><a href="#contact" class="btn btn-ghost btn-sm">Enquire</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAINTENANCE ================= -->
+<section id="maintenance">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Care Plans</span>
+      <h2>Keep It Rolling <span class="grad">Smoothly</span></h2>
+      <p>Transparent, fixed-price maintenance packages. No hidden extras — ever.</p>
+    </div>
+
+    <div class="packages">
+      <article class="pkg reveal">
+        <h3>Essential Check</h3>
+        <p style="color:var(--muted);font-size:.9rem">The monthly once-over for everyday drivers.</p>
+        <div class="price">£59</div>
+        <ul>
+          <li>Tyre pressure &amp; tread depth</li>
+          <li>Wheel torque check</li>
+          <li>Brake visual inspection</li>
+          <li>Fluid top-up</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Choose Plan</a>
+      </article>
+
+      <article class="pkg featured reveal">
+        <span class="badge">Most Popular</span>
+        <h3>Wheel &amp; Tyre Care</h3>
+        <p style="color:var(--muted);font-size:.9rem">Complete wheel health, seasonal ready.</p>
+        <div class="price grad">£129</div>
+        <ul>
+          <li>Everything in Essential</li>
+          <li>Full wheel alignment</li>
+          <li>Balancing &amp; rotation</li>
+          <li>Puncture repair included</li>
+          <li>Rim seal &amp; finish polish</li>
+        </ul>
+        <a href="#contact" class="btn btn-gold">Book This Plan</a>
+      </article>
+
+      <article class="pkg reveal">
+        <h3>Full Aura Service</h3>
+        <p style="color:var(--muted);font-size:.9rem">Total vehicle care, inside and out.</p>
+        <div class="price">£249</div>
+        <ul>
+          <li>Everything in Wheel &amp; Tyre</li>
+          <li>Oil &amp; filter change</li>
+          <li>Brake pad inspection</li>
+          <li>Digital health report</li>
+          <li>Complimentary valet</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Choose Plan</a>
+      </article>
+    </div>
+
+    <div class="tips">
+      <div class="tip reveal"><b>Weekly</b><span>Check tyre pressure when tyres are cold for accurate readings.</span></div>
+      <div class="tip reveal"><b>Monthly</b><span>Inspect tread depth — 1.6mm is the legal UK minimum.</span></div>
+      <div class="tip reveal"><b>Seasonal</b><span>Swap to winter tyres below 7°C for safer grip.</span></div>
+      <div class="tip reveal"><b>Yearly</b><span>Book a full alignment to protect tyre life and handling.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-visual reveal">
+      <div class="ring"></div>
+      <div class="ring two"></div>
+      <div class="wheel"></div>
+    </div>
+
+    <div class="about-copy reveal">
+      <span class="eyebrow">Our Story</span>
+      <h2>Driven by Detail, <span class="grad">Finished</span> in Ink</h2>
+      <p>
+        INK &amp; AURA began with a simple belief: wheels are the most honest part of a car.
+        They show how it's driven, how it's kept, and how much its owner cares.
+      </p>
+      <p>
+        From our workshop at Radleigh House, 1 Golf Road, we combine precision engineering
+        with a genuinely obsessive finish standard — supplying, fitting and maintaining wheels
+        for drivers across the United Kingdom.
+      </p>
+
+      <div class="stats">
+        <div class="stat"><b data-count="12">0</b><span>Years in Business</span></div>
+        <div class="stat"><b data-count="4800">0</b><span>Wheels Fitted</span></div>
+        <div class="stat"><b data-count="26">0</b><span>Brands Stocked</span></div>
+        <div class="stat"><b data-count="98">0</b><span>% Satisfaction</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Let's Get You <span class="grad">Rolling</span></h2>
+      <p>Book a fitting, request a quote, or just ask a question — we reply within one working day.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="info-card">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          </div>
+          <div>
+            <h4>Workshop</h4>
+            <p>Radleigh House, 1 Golf Road<br>United Kingdom</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4h2.2c.7 0 1.3.5 1.5 1.2l.8 3a1.5 1.5 0 0 1-.5 1.5L8 11a12 12 0 0 0 5 5l1.3-1.5c.4-.4 1-.6 1.5-.5l3 .8c.7.2 1.2.8 1.2 1.5v2.2c0 .8-.7 1.5-1.5 1.5A15.5 15.5 0 0 1 4 5.5z"/></svg>
+          </div>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:+44 7848 457587">+44 7848 457587</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+          </div>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:contact@inkaura.autos">contact@inkaura.autos</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          </div>
+          <div>
+            <h4>Opening Hours</h4>
+            <p>Mon – Fri: 08:30 – 18:00<br>Sat: 09:00 – 15:00 · Sun: Closed</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <form id="bookingForm" novalidate>
+          <div class="two-col">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" placeholder="+44 ..." required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="service">Service Needed</label>
+              <select id="service">
+                <option>Wheel Supply &amp; Fitment</option>
+                <option>Tyre Replacement</option>
+                <option>Full Vehicle Servicing</option>
+                <option>Performance Upgrade</option>
+                <option>Refurbishment &amp; Coating</option>
+                <option>Mobile Assistance</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="date">Preferred Date</label>
+              <input type="date" id="date">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Tell us about your vehicle and what you need..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width:100%">Send Request →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-about">
+        <a href="#home" class="brand">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="#0b0b0e" stroke="#2a2b34" stroke-width="2"/>
+            <circle cx="32" cy="32" r="22" fill="none" stroke="#f0a500" stroke-width="4"/>
+            <circle cx="32" cy="32" r="6.5" fill="#f0a500"/>
+            <g stroke="#f0a500" stroke-width="3" stroke-linecap="round">
+              <path d="M32 10v14M32 40v14M10 32h14M40 32h14M16.5 16.5l10 10M37.5 37.5l10 10M47.5 16.5l-10 10M26.5 37.5l-10 10"/>
+            </g>
+          </svg>
+          <span class="brand-text">INK &amp; AURA<small>WHEELS · AUTOCARE</small></span>
+        </a>
+        <p>Premium forged wheels, alloys and expert vehicle maintenance — engineered in the United Kingdom.</p>
+      </div>
+
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#wheels">Wheels</a></li>
+          <li><a href="#maintenance">Maintenance</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Radleigh House, 1 Golf Road</li>
+          <li>United Kingdom</li>
+          <li><a href="tel:+44 7848 457587">+44 7848 457587</a></li>
+          <li><a href="mailto:contact@inkaura.autos">contact@inkaura.autos</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> INK &amp; AURA. All rights reserved.</span>
+      <span>Wheels · Tyres · Maintenance</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">✓ Request sent — we'll be in touch shortly!</div>
+
+<script>
+/* ---------- Scroll progress + navbar state ---------- */
+const nav = document.getElementById('nav');
+const progress = document.getElementById('progress');
+
+function onScroll(){
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 30);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* ---------- Mobile menu ---------- */
+const burger = document.getElementById('burger');
+const navMenu = document.getElementById('navMenu');
+
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  navMenu.classList.toggle('open');
+});
+navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open');
+  navMenu.classList.remove('open');
+}));
+
+/* ---------- Reveal on scroll ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const siblings = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+      const idx = siblings.indexOf(el);
+      el.style.transitionDelay = Math.min(idx, 5) * 90 + 'ms';
+      el.classList.add('in');
+      revealObs.unobserve(el);
+    }
+  });
+}, {threshold: 0.12, rootMargin: '0px 0px -60px 0px'});
+revealEls.forEach(el => revealObs.observe(el));
+
+/* ---------- Animated counters ---------- */
+const counters = document.querySelectorAll('[data-count]');
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = +el.dataset.count;
+    const dur = 1600;
+    const start = performance.now();
+    const suffix = target === 4800 ? '+' : '';
+
+    function tick(now){
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    counterObs.unobserve(el);
+  });
+}, {threshold: 0.5});
+counters.forEach(c => counterObs.observe(c));
+
+/* ---------- Product filter ---------- */
+const filters = document.querySelectorAll('.filter');
+const products = document.querySelectorAll('.product');
+
+filters.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filters.forEach(f => f.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cat = btn.dataset.filter;
+    products.forEach(p => {
+      const show = cat === 'all' || p.dataset.cat === cat;
+      p.classList.toggle('hide', !show);
+      if (show) {
+        p.style.animation = 'none';
+        void p.offsetWidth;
+        p.style.animation = 'fadeUp .5s var(--ease) both';
+      }
+    });
+  });
+});
+
+/* ---------- Active nav link on scroll ---------- */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-menu a');
+
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, {rootMargin: '-45% 0px -50% 0px'});
+sections.forEach(s => sectionObs.observe(s));
+
+/* ---------- Booking form ---------- */
+const form = document.getElementById('bookingForm');
+const toast = document.getElementById('toast');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  if (!name || !phone || !email) {
+    toast.textContent = '⚠ Please fill in name, phone and email.';
+    toast.style.background = '#ff5c5c';
+    toast.style.color = '#fff';
+    showToast();
+    return;
+  }
+
+  toast.textContent = "✓ Request sent — we'll be in touch shortly!";
+  toast.style.background = '';
+  toast.style.color = '';
+  showToast();
+  form.reset();
+});
+
+function showToast(){
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 3600);
+}
+
+/* ---------- Smooth anchor scroll (fallback for older browsers) ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+  });
+});
+
+/* ---------- Footer year ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
